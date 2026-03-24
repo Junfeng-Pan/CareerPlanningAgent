@@ -1,0 +1,19 @@
+[project]
+name = "career-planning-agent-root"
+version = "0.1.0"
+description = "职业规划智能体集成项目"
+dependencies = [
+    "langchain",
+    "langgraph",
+    "python-dotenv",
+    "pydantic",
+    "pyyaml",
+]
+requires-python = ">=3.10"
+
+[tool.setuptools]
+packages = ["main_agent"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

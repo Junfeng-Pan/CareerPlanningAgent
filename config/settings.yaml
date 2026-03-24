@@ -1,0 +1,12 @@
+llm:
+  base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+  model_name: "qwen3.5-flash"
+  temperature: 0.0
+  max_retries: 3
+
+mysql:
+  host: "127.0.0.1"
+  port: 3306
+  user: "root"
+  database: "job_system"
+  charset: "utf8mb4"

@@ -1,0 +1,55 @@
+#### 主智能体修改方案
+
+我觉得我们弄错了主体，主智能体最重要的功能是对话，而不是路由！它输出的对话内容直接决定了用户体验，调用专家工具只是辅助功能。为此我们需要修改提示词，让主智能体以对话为主，当用户明确提出需求时才调用工具。
+
+我们还要为主智能体配置知识库，并使用Agentic RAG技术，让大模型主动决定检索时机和检索内容。
+
+主智能体对工具的调用是灵活的，目的是服务于用户。
+
+* 比如，用户说“大学生应该怎么准备就业？”。主智能体无需调用工具，直接回答即可。
+
+* 比如，用户说“我擅长c语言，适合哪些工作”，这时智能体可以调用自己的知识库，也可以直接回答。
+
+* 比如，用户询问“Java工程师需要哪些技能”。主智能体调用岗位画像专家。
+
+* 比如，用户上传简历，说“请你看看我的简历”，主智能体调用学生能力建模专家。
+
+#### 相关说明
+
+* 之前的对智能体有规则约束，比如智能体必须调用学生能力建模专家和岗位画像专家之后才能调用人岗匹配专家（因为人岗匹配专家依赖于前者的结果），这是没必要的。只要用户上传简历后，主智能体就可以直接调用人岗匹配专家，此时如果没有调用过学生能力建模专家和岗位画像专家，则调用前者用于人岗匹配。
+
+* 关于知识库，目前采用data/knowledgebase_main/主智能体知识库.txt用于测试即可。
+
+* 主智能体本身具备对话功能，这样就不需要reply_node节点了。
+
+* 把主智能体的模型改为最新的"qwen3.5-plus"，并开启思考模型，同时对所有的模型开启流式输出。调用示例如下：
+```
+from openai import OpenAI
+import os
+
+client = OpenAI(
+    # 如果没有配置环境变量，请用阿里云百炼API Key替换：api_key="sk-xxx"
+    api_key=os.getenv("DASHSCOPE_API_KEY"),
+    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+)
+
+messages = [{"role": "user", "content": "你是谁"}]
+completion = client.chat.completions.create(
+    model="qwen3.5-plus",  # 您可以按需更换为其它深度思考模型
+    messages=messages,
+    extra_body={"enable_thinking": True},
+    stream=True
+)
+is_answering = False  # 是否进入回复阶段
+print("\n" + "=" * 20 + "思考过程" + "=" * 20)
+for chunk in completion:
+    delta = chunk.choices[0].delta
+    if hasattr(delta, "reasoning_content") and delta.reasoning_content is not None:
+        if not is_answering:
+            print(delta.reasoning_content, end="", flush=True)
+    if hasattr(delta, "content") and delta.content:
+        if not is_answering:
+            print("\n" + "=" * 20 + "完整回复" + "=" * 20)
+            is_answering = True
+        print(delta.content, end="", flush=True)
+```
