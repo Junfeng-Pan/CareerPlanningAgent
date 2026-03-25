@@ -25,6 +25,8 @@ data/
 *.swp
 *.swo
 
+resources/student_resumes/
+
 # Project specific
 logs/
 temp/

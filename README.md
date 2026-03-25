@@ -2,6 +2,19 @@
 
 CareerPlanningAgent 是一个基于 **Single Agent + Tools (ReAct)** 架构构建的职业规划助手。它利用大模型的推理与决策能力，通过调用多个专家工具，为用户提供简历分析、岗位画像检索及人岗匹配建议。
 
+![图片演示](./resources/pictures/图片演示02.png)
+
+## 前置知识
+
+我们复用了之前开发的学生能力建模模块，岗位画像建模模块，人岗匹配模块。
+
+[学生能力建模专家](https://github.com/Junfeng-Pan/studentprofile-agent.git)
+
+[岗位建模专家](https://github.com/Junfeng-Pan/job-system.git)
+
+[人岗匹配专家](https://github.com/Junfeng-Pan/matching_engine.git)
+
+
 ## 🌟 核心特性
 
 - **ReAct 推理循环**：主智能体采用“思考-行动-观察” (Thought-Action-Observation) 循环，自主规划任务路径。
@@ -29,13 +42,11 @@ D:\pythonP\Professional_workplace\CareerPlanningAgent\
 ## 🛠️ 环境搭建
 
 1. **安装依赖**：
-   本项目采用 monorepo 结构，推荐使用 editable 模式安装各个子模块：
+   本项目现已统一为单包管理，您只需在项目根目录下运行：
    ```bash
-   pip install -e ./job_system
-   pip install -e ./matching_engine
-   pip install -e ./studentprofile_agent
-   pip install -r requirements.txt
+   pip install -e .
    ```
+   *注意：若需安装特定依赖，请参考 pyproject.toml 中的 dependencies 列表。*
 
 2. **配置环境变量**：
    在根目录下创建 `.env` 文件，配置如下参数：
@@ -56,5 +67,8 @@ D:\pythonP\Professional_workplace\CareerPlanningAgent\
 python tests/test_main_agent.py
 ```
 
----
-感谢使用 CareerPlanningAgent！
+## 工作总结
+
+* 目前只是实现了粗略的框架，三个子模块（学生能力建模专家，岗位画像专家，人岗匹配专家）需要重新设计。
+* 职业规划，路径规划系统还没有实现。
+* 主智能体需要的知识库，岗位画像专家需要的知识库和数据库没有配置。

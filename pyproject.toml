@@ -1,19 +1,38 @@
 [project]
-name = "career-planning-agent-root"
+name = "career-planning-agent"
 version = "0.1.0"
-description = "职业规划智能体集成项目"
-dependencies = [
-    "langchain",
-    "langgraph",
-    "python-dotenv",
-    "pydantic",
-    "pyyaml",
-]
+description = "CareerPlanningAgent: 基于 ReAct 架构的职业规划智能体系统"
+readme = "README.md"
 requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "langchain>=0.3.0",
+    "langgraph>=0.2.0",
+    "langchain-openai>=0.1.0",
+    "langchain-chroma>=0.1.0",
+    "langchain-community>=0.3.0",
+    "openai>=1.0.0",
+    "pydantic>=2.0.0",
+    "sqlalchemy>=2.0.0",
+    "pandas>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "pyyaml>=6.0.0",
+    "tqdm>=4.66.0",
+    "docx2txt>=0.8",
+    "pymupdf>=1.24.0",
+    "dashscope>=1.15.0",
+]
 
 [tool.setuptools]
-packages = ["main_agent"]
+# 自动发现根目录下的所有 Python 包（包含 __init__.py 的目录）
+packages = [
+    "main_agent",
+    "job_system",
+    "matching_engine",
+    "studentprofile_agent",
+    "database"
+]
 
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
