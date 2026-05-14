@@ -6,21 +6,70 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 dependencies = [
+    # LangChain & LangGraph
     "langchain>=0.3.0",
     "langgraph>=0.2.0",
     "langchain-openai>=0.1.0",
     "langchain-chroma>=0.1.0",
     "langchain-community>=0.3.0",
+
+    # OpenAI & DashScope (阿里云通义千问)
     "openai>=1.0.0",
+    "dashscope>=1.15.0",
+
+    # 数据验证与 ORM
     "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
     "sqlalchemy>=2.0.0",
+
+    # 数据处理
     "pandas>=2.0.0",
+    "numpy>=2.0.0",
+
+    # 向量数据库
+    "chromadb>=1.5.0",
+
+    # 文档处理
+    "python-docx>=1.0.0",
+    "PyMuPDF>=1.24.0",
+    "pypdf>=6.0.0",
+    "docx2txt>=0.8",
+
+    # Web 框架 (FastAPI)
+    "fastapi>=0.135.0",
+    "uvicorn>=0.40.0",
+    "starlette>=1.0.0",
+    "python-multipart>=0.0.20",
+
+    # 数据库驱动
+    "pymysql>=1.1.0",
+
+    # 工具库
     "python-dotenv>=1.0.0",
     "pyyaml>=6.0.0",
     "tqdm>=4.66.0",
-    "docx2txt>=0.8",
-    "pymupdf>=1.24.0",
-    "dashscope>=1.15.0",
+    "requests>=2.32.0",
+    "httpx>=0.28.0",
+    "tiktoken>=0.12.0",
+
+    # 可视化与前端 (可选)
+    "streamlit>=1.50.0",
+]
+
+[project.optional-dependencies]
+# 开发依赖
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "black>=24.0.0",
+    "ruff>=0.9.0",
+    "mypy>=1.15.0",
+]
+
+# 完整依赖 (包含所有可选功能)
+all = [
+    "streamlit>=1.50.0",
+    "rich>=14.0.0",
 ]
 
 [tool.setuptools]
@@ -30,9 +79,31 @@ packages = [
     "job_system",
     "matching_engine",
     "studentprofile_agent",
-    "database"
+    "database",
+    "app.backend",
 ]
+
+[tool.setuptools.package-dir]
+"main_agent" = "main_agent"
+"job_system" = "job_system"
+"matching_engine" = "matching_engine/src"
+"studentprofile_agent" = "studentprofile_agent"
+"database" = "database"
+"app.backend" = "app/backend"
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.mypy]
+python_version = "3.10"
+strict = false
+ignore_missing_imports = true
